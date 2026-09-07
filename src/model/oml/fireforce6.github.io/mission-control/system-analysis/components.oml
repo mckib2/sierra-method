@@ -66,6 +66,69 @@ description <https://fireforce6.github.io/mission-control/system-analysis/compon
         base:isContainedBy Battery
     ]
 
+    // NBPM: Task 1
+    @dc:description "Collection of wind turbines"
+    @rdfs:label "Wind Farm"
+    instance WindFarm : component:Component [
+        base:description "Collection of wind turbines"
+        base:isContainedBy PowerSubsystem
+    ]
+
+    @dc:description "The first wind turbine in the wind farm."
+    @rdfs:label "Wind Turbine 1"
+    instance WindTurbine1 : component:Component [
+        base:description "The first wind turbine in the wind farm."
+        base:isContainedBy WindFarm
+    ]
+
+    @dc:description "The generator of the first wind turbine."
+    @rdfs:label "Generator 1"
+    instance Generator1 : component:Component [
+        base:description "The generator of the first wind turbine."
+        base:isContainedBy WindTurbine1
+    ]
+
+    @dc:description "The gear box of the first wind turbine."
+    @rdfs:label "Gear Box 1"
+    instance GearBox1 : component:Component [
+        base:description "The gear box of the first wind turbine."
+        base:isContainedBy WindTurbine1
+    ]
+
+    @dc:description "The rotor blade for the first wind turbine."
+    @rdfs:label "Rotor Blade 1"
+    instance RotorBlade1 : component:Component [
+        base:description "The rotor blade for the first wind turbine."
+        base:isContainedBy WindTurbine1
+    ]
+
+    @dc:description "The second wind turbine in the wind farm."
+    @rdfs:label "Wind Turbine 2"
+    instance WindTurbine2 : component:Component [
+        base:isContainedBy WindFarm
+    ]
+
+    @dc:description "The generator for the second wind turbine."
+    @rdfs:label "Generator 2"
+    instance Generator2 : component:Component [
+        base:description "The generator for the second wind turbine."
+        base:isContainedBy WindTurbine2
+    ]
+
+    @dc:description "The gear box for the second wind turbine."
+    @rdfs:label "Gear Box 2"
+    instance GearBox2 : component:Component [
+        base:description "The gear box for the second wind turbine."
+        base:isContainedBy WindTurbine2
+    ]
+
+    @dc:description "The rotor blade for the second wind turbine."
+    @rdfs:label "Rotor Blade 2"
+    instance RotorBlade2 : component:Component [
+        base:description "The rotor blade for the second wind turbine."
+        base:isContainedBy WindTurbine2
+    ]
+
     instance SolarArray : component:Component [
         base:description "Solar Panel Assembly"
         base:isContainedBy PowerSubsystem

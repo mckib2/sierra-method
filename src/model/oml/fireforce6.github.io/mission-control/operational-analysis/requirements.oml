@@ -14,6 +14,32 @@ description <https://fireforce6.github.io/mission-control/operational-analysis/r
         base:priority "High"
     ]
 
+    // NBPM: Task 4
+    instance R1_5 : stakeholder:Requirement [
+        base:description "Real-Time Map Lat/Lon"
+        base:expression "The system shall display latitude and longitude overlayed on the real-time map."
+        stakeholder:isStatedBy stakeholders:Operator
+        base:category "L1"
+        base:priority "Medium"
+    ]
+
+    instance R1_75 : stakeholder:Requirement [
+        base:description "Real-Time Map Interaction"
+        base:expression "The system shall allow panning and zooming in the real-time map."
+        stakeholder:isStatedBy stakeholders:Operator
+        base:category "L1"
+        base:priority "Low"
+    ]
+
+    // NBPM: Task 5
+    // let's trace this requirement to a concern and then a capability
+    //     This is slightly perplexing.  You'd expect to be able to ask this
+    //     kind of question in a straightforward way, but instead we have to
+    //     notice that R2 isStatedBy SafetyOfficer, and SafetyOfficer
+    //     also expresses SafetyOfficerNeeds. which through NLP we might be
+    //     able to tell that the Concern SafetyOfficerNeeds is related to to
+    //     this Requirement R2.  The Concern derives an Objective O4 which
+    //     is required as Capability C7.
     instance R2 : stakeholder:Requirement [
         base:description "Critical Alerts"
         base:expression "The system shall show real-time critical alerts and notifications."

@@ -4,6 +4,46 @@ description <https://fireforce6.github.io/mission-control/system-analysis/connec
 
 	uses <https://www.modelware.io/sierra/component#> as component
 
+	uses <http://purl.org/dc/elements/1.1/> as dc
+
+    // NBPM: Task 2
+    @dc:description "Wind turbines have some power in for telemetry, power out that is generated, and telemetry signals going out."
+    ref instance components:WindTurbine1 [
+        component:hasPort WindTurbine1.Telemetry_Out
+        component:hasPort WindTurbine1.Power_In
+        component:hasPort WindTurbine1.Power_Out
+    ]
+    instance WindTurbine1.Telemetry_Out : component:Port [ component:direction "Out" ]
+    instance WindTurbine1.Power_In : component:Port [ component:direction "In" ]
+    instance WindTurbine1.Power_Out : component:Port [ component:direction "Out" ]
+
+    @dc:description "Wind turbines have some power in for telemetry, power out that is generated, and telemetry signals going out."
+    ref instance components:WindTurbine2 [
+        component:hasPort WindTurbine2.Telemetry_Out
+        component:hasPort WindTurbine2.Power_In
+        component:hasPort WindTurbine2.Power_Out
+    ]
+    instance WindTurbine2.Telemetry_Out : component:Port [ component:direction "Out" ]
+    instance WindTurbine2.Power_In : component:Port [ component:direction "In" ]
+    instance WindTurbine2.Power_Out : component:Port [ component:direction "Out" ]
+
+    @dc:description "Gear Boxes are instrumeted with temperature sensors.  These sensors need power."
+    ref instance components:GearBox1 [
+        component:hasPort GearBox1.Temperature_Out
+        component:hasPort GearBox2.Power_In
+    ]
+    instance GearBox1.Temperature_Out : component:Port [ component:direction "Out" ]
+    instance GearBox1.Power_In : component:Port [ component:direction "In" ]
+
+    @dc:description "Gear Boxes are instrumeted with temperature sensors.  These sensors need power."
+    ref instance components:GearBox2 [
+        component:hasPort GearBox2.Temperature_Out
+        component:hasPort GearBox2.Power_In
+    ]
+    instance GearBox2.Temperature_Out : component:Port [ component:direction "Out" ]
+    instance GearBox2.Power_In : component:Port [ component:direction "In" ]
+
+
     ref instance components:FireSat [
         component:hasPort FireSat.Command_In
         component:hasPort FireSat.Telemetry_Out
@@ -39,6 +79,65 @@ description <https://fireforce6.github.io/mission-control/system-analysis/connec
     instance TelemetrySignal : component:Signal []
     instance CommandSignal : component:Signal []
     instance ElectricalPower : component:Energy []
+
+    // NBPM: Task 3
+    @dc:description "Wind Turbines send telemetry to the platform."
+    relation instance Conn_WindTurbine1_to_Platform : component:Connection [
+        from WindTurbine1.Telemetry_Out
+        to Platform.Data_In
+        component:transfers TelemetrySignal
+    ]
+
+    @dc:description "Wind Turbines send telemetry to the platform."
+    relation instance Conn_WindTurbine2_to_Platform : component:Connection [
+        from WindTurbine2.Telemetry_Out
+        to Platform.Data_In
+        component:transfers TelemetrySignal
+    ]
+
+    @dc:description "Wind Turbines need power."
+    relation instance Conn_PlatformPower_to_WindTurbine1 : component:Connection [
+        from Platform.Power_Out
+        to WindTurbine1.Power_In
+        component:transfers ElectricalPower
+    ]
+
+    @dc:description "Wind Turbines need power."
+    relation instance Conn_PlatformPower_to_WindTurbine2 : component:Connection [
+        from Platform.Power_Out
+        to WindTurbine2.Power_In
+        component:transfers ElectricalPower
+    ]
+
+    @dc:description "Gear boxes need power."
+    relation instance Conn_PlatformPower_to_GearBox1 : component:Connection [
+        from Platform.Power_Out
+        to GearBox1.Power_In
+        component:transfers ElectricalPower
+    ]
+
+    @dc:description "Gear boxes need power."
+    relation instance Conn_PlatformPower_to_GearBox2 : component:Connection [
+        from Platform.Power_Out
+        to GearBox2.Power_In
+        component:transfers ElectricalPower
+    ]
+
+    @dc:description "Gear Boxes send telemetry to the platform."
+    relation instance Conn_GearBox1_to_Platform : component:Connection [
+        from GearBox1.Temperature_Out
+        to Platform.Data_In
+        component:transfers TelemetrySignal
+    ]
+
+    @dc:description "Gear Boxes send telemetry to the platform."
+    relation instance Conn_GearBox2_to_Platform : component:Connection [
+        from GearBox2.Temperature_Out
+        to Platform.Data_In
+        component:transfers TelemetrySignal
+    ]
+
+    // NBPM: deliberately don't hook up power for now
 
     relation instance Conn_FireSatCmd_to_Platform : component:Connection [
         from FireSat.Command_In

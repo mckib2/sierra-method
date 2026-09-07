@@ -5,7 +5,7 @@ vocabulary <https://www.modelware.io/sierra/component#> as component {
 
     extends <https://www.modelware.io/sierra/base#> as base
 
-	extends <http://opencaesar.io/isq/> as isq
+    extends <http://www.w3.org/2001/XMLSchema#> as xsd
 
     @dc:description "A component is a part of a system."
     concept Component < base:Container, base:Contained, base:Element
@@ -14,9 +14,9 @@ vocabulary <https://www.modelware.io/sierra/component#> as component {
     concept PhysicalPart < Component
 
     @dc:description "The mass of the physical part."
-    quantity property mass [
+    scalar property mass [
         domain PhysicalPart
-        quantity isq:Mass
+        range xsd:decimal
         functional
     ]
 
