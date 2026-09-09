@@ -30,7 +30,7 @@ description <https://fireforce6.github.io/mission-control/system-analysis/connec
     @dc:description "Gear Boxes are instrumeted with temperature sensors.  These sensors need power."
     ref instance components:GearBox1 [
         component:hasPort GearBox1.Temperature_Out
-        component:hasPort GearBox2.Power_In
+        component:hasPort GearBox1.Power_In
     ]
     instance GearBox1.Temperature_Out : component:Port [ component:direction "Out" ]
     instance GearBox1.Power_In : component:Port [ component:direction "In" ]
