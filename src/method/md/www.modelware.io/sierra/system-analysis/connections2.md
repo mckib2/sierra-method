@@ -150,3 +150,38 @@ component:ConnectionShape
     ] ;
     .
 ```
+
+#### 3. Active Transfer Items
+
+We could imagine that someone might want to know about which transfer items have been associated with connections, so let's make a table that shows that.
+
+```table-editor
+---
+columns: { this: { label: "Transfer Item" } }
+---
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix base: <https://www.modelware.io/sierra/base#> .
+@prefix component: <https://www.modelware.io/sierra/component#> .
+
+component:ActiveItemShape
+    a sh:NodeShape ;
+    sh:targetClass base:Item ;
+    dash:readOnly true ;
+    sh:property [
+        sh:path component:isTransferedBy ;
+        sh:name "Transferred By (Connections)" ;
+        sh:class component:Connection ;
+        dash:readOnly true ;
+        sh:order 1 ;
+    ] ;
+    sh:property [
+        sh:path base:description ;
+        sh:name "Description" ;
+        dash:editor dash:TextAreaEditor ;
+        dash:readOnly true ;
+        sh:order 2 ;
+    ] ;
+    .
+```
+
