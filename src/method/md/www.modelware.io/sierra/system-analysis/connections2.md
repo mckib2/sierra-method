@@ -67,6 +67,7 @@ component:PortShape
         sh:maxCount 1 ;
         sh:order 3 ;
     ] ;
+    .
 ```
 
 #### 2. component:ConnectionShape
@@ -111,4 +112,5 @@ component:ConnectionShape
         sh:maxCount 1 ;
         sh:order 4 ;
     ] ;
+    .
 ```
