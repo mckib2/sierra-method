@@ -164,6 +164,17 @@ component:ConnectionShape
         }
     """ ;
     ] ;
+
+    # NBPM: let's think of another interesting check we can validate we a little SPARQL
+    sh:sparql [
+        sh:message "Naming violation: Connection name must follow 'Conn_<Source>_to_<Target>'." ;
+        sh:select """
+            SELECT $this WHERE {
+                BIND(STRAFTER(STR($this), "#") AS ?name)
+                FILTER (!REGEX(?name, "^Conn_[A-Za-z0-9]+_to_[A-Za-z0-9]+$"))
+            }
+        """ ;
+    ] ;
     .
 ```
 
