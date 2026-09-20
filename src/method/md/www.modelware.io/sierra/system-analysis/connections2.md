@@ -1,3 +1,18 @@
+---
+template:
+  id: https://www.modelware.io/sierra/system-analysis/connections2
+  name: "Ports 'n Connections"
+  rank: 0
+  expose:
+    - kind: compose
+  params:
+    - id: ontology
+      type: iri
+      defaultValue: ${context.ontology}
+      required: true
+---
+
+
 ### Assignment 4, Step 2: focal type, structure, expected content, and rules
 
 I'd like to split this notebook into two parts: A) the ports and B) the connections.
@@ -33,9 +48,12 @@ Similarly, let's impose some construction rules:
 - connection must have a single description (again, more strict for fun!)
 
 
-#### 1. component:PortShape
+#### 1. component:Port Shape
 
- ```shacl
+```table-editor
+---
+columns: { this: { label: "Port" } }
+---
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix dash: <http://datashapes.org/dash#> .
 @prefix base: <https://www.modelware.io/sierra/base#> .
@@ -70,9 +88,12 @@ component:PortShape
     .
 ```
 
-#### 2. component:ConnectionShape
+#### 2. component:Connection Shape
 
-```shacl
+```table-editor
+---
+columns: { this: { label: "Connection" } }
+---
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix oml: <http://opencaesar.io/oml#> .
 @prefix dash: <http://datashapes.org/dash#> .
@@ -111,6 +132,21 @@ component:ConnectionShape
         sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:order 4 ;
+    ] ;
+
+    sh:sparql [
+        sh:message "Hey, bud!  A connection must flow from an 'Out' port to an 'In' port." ;
+        sh:select """
+            PREFIX oml: <http://opencaesar.io/oml#>
+            PREFIX component: <https://www.modelware.io/sierra/component#>
+            SELECT $this WHERE {
+                $this oml:hasSource ?src ;
+                      oml:hasTarget ?tgt .
+                ?src component:direction ?srcDir .
+                ?tgt component:direction ?tgtDir .
+                FILTER (?srcDir != "Out" || ?tgtDir != "In")
+            }
+        """ ;
     ] ;
     .
 ```
