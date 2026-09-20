@@ -26,10 +26,10 @@ I'd like to split this notebook into two parts: A) the ports and B) the connecti
     • base:description: Description / notes (dash:TextAreaEditor, maxCount 1)
 - Editor: table-editor
 
-Let's make some authoring rules (that may or may not be stricter than what is specified by the TBox specs):
+Let's make some authoring rules:
 - port must have no more than 1 parent component
 - port must have no more than 1 direction, one of "In" or "Out"
-- port must have a single description (this is more strict -- for fun!)
+- port must have no more than 1 description
 
 #### 2. Part B: Component Connections (component:Connection)
 
@@ -45,7 +45,7 @@ Similarly, let's impose some construction rules:
 - connection must have a single source port
 - connection must have a single target port
 - connection can specify what is transfered
-- connection must have a single description (again, more strict for fun!)
+- connection must have no more than 1 description
 
 
 #### 1. component:Port Shape
@@ -81,7 +81,7 @@ component:PortShape
         sh:path base:description ;
         sh:name "Description" ;
         dash:editor dash:TextAreaEditor ;  # NBPM: dash!
-        sh:minCount 1 ;
+        #sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:order 3 ;
     ] ;
@@ -129,7 +129,7 @@ component:ConnectionShape
         sh:path base:description ;
         sh:name "Description" ;
         dash:editor dash:TextAreaEditor ;
-        sh:minCount 1 ;
+        #sh:minCount 1 ;
         sh:maxCount 1 ;
         sh:order 4 ;
     ] ;
@@ -147,6 +147,22 @@ component:ConnectionShape
                 FILTER (?srcDir != "Out" || ?tgtDir != "In")
             }
         """ ;
+    ] ;
+
+    # NBPM: I was unhappy with the above validation we were achieving with SHACL, so I imagined
+    #       a more interesting thing we could check: make sure we have no short-circuit conditions!
+    sh:sparql [
+    sh:message "Short-circuit violation: Cannot connect two ports belonging to the same component." ;
+    sh:select """
+        PREFIX oml: <http://opencaesar.io/oml#>
+        PREFIX component: <https://www.modelware.io/sierra/component#>
+        SELECT $this WHERE {
+            $this oml:hasSource ?src ;
+                    oml:hasTarget ?tgt .
+            ?src component:portOf ?comp .
+            ?tgt component:portOf ?comp .
+        }
+    """ ;
     ] ;
     .
 ```
