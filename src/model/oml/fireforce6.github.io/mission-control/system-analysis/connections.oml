@@ -72,7 +72,7 @@ description <https://fireforce6.github.io/mission-control/system-analysis/connec
     instance ElectricalPower : component:Energy
 
     relation instance Conn_FireSatCmd_to_Platform : component:Connection [
-        from FireSat.Command_In
+        from FireSat.Command_Out
         to Platform.Command_In
         component:transfers CommandSignal
     ]
@@ -97,28 +97,36 @@ description <https://fireforce6.github.io/mission-control/system-analysis/connec
 
     relation instance Conn_Platform_to_FireSatTelem : component:Connection [
         from Platform.Data_Out
-        to FireSat.Telemetry_Out
+        to FireSat.Telemetry_In
         component:transfers TelemetrySignal
     ]
 
-    @rdfs:label "My Cool Conn 1"
-    relation instance Connection1 : component:Connection [
+    relation instance Conn_Platform_to_FireSat : component:Connection [
         from Platform.Data_Out
-        to Platform.Data_In
+        to FireSat.Telemetry_In
         component:transfers TelemetrySignal
     ]
 
     @rdfs:label "My Cool Conn 2"
-    relation instance Connection2 : component:Connection [
+    relation instance Conn_Platform_to_Payload : component:Connection [
         from Platform.Power_Out
         to Payload.Power_In
         component:transfers CommandSignal
     ]
 
-    @rdfs:label "My Cool Conn 3"
-    relation instance Connection3 : component:Connection [
+    relation instance Conn_FireSat_to_Platform : component:Connection [
         from FireSat.Telemetry_Out
         to Platform.Data_In
         component:transfers CommandSignal
+    ]
+
+    instance FireSat.Command_Out : component:Port [
+        component:portOf components:FireSat
+        component:direction "Out"
+    ]
+
+    instance FireSat.Telemetry_In : component:Port [
+        component:portOf components:FireSat
+        component:direction "In"
     ]
 }
