@@ -43,22 +43,13 @@ At the port level, orphan interfaces point to at least two risks. Unconnected in
 
 ```python
 include('src/method/py/utils.py')
+include('src/method/py/oml_adapter.py')
 
-# Query: Extract ports and their connection states
-result = await query("""
-  PREFIX oml: <http://opencaesar.io/oml#>
-  PREFIX component: <https://www.modelware.io/sierra/component#>
-  SELECT ?port ?comp ?dir ?isConnected
-  WHERE {
-    ?port a component:Port .
-    OPTIONAL { ?port (component:portOf|^component:hasPort) ?comp }
-    OPTIONAL { ?port component:direction ?dir }
-    BIND(EXISTS {
-      ?conn a component:Connection .
-      { ?conn oml:hasSource ?port } UNION { ?conn oml:hasTarget ?port }
-    } AS ?isConnected)
-  }
-""")
+# pass async query function into adapter
+adapter = OmlQueryAdapter(query_executor=query)
+
+# run canonical .sparql query from file via adapter
+result = await adapter.execute('ports_health')
 
 # Compute: calc interface completeness metrics
 rows = result.get('rows', [])

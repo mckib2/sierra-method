@@ -1,0 +1,20 @@
+PREFIX oml: <http://opencaesar.io/oml#>
+PREFIX component: <https://www.modelware.io/sierra/component#>
+
+SELECT ?Connection ?SourcePort ?SourceDir ?TargetPort ?TargetDir ?TransferredItem ?Status
+WHERE {
+  ?conn a component:Connection ;
+        oml:hasSource ?srcPort ;
+        oml:hasTarget ?tgtPort .
+  OPTIONAL { ?srcPort component:direction ?srcDir }
+  OPTIONAL { ?tgtPort component:direction ?tgtDir }
+  OPTIONAL { ?conn component:transfers ?item }
+  BIND(REPLACE(STR(?conn), "^.*#", "") AS ?Connection)
+  BIND(REPLACE(STR(?srcPort), "^.*#", "") AS ?SourcePort)
+  BIND(COALESCE(?srcDir, "Missing") AS ?SourceDir)
+  BIND(REPLACE(STR(?tgtPort), "^.*#", "") AS ?TargetPort)
+  BIND(COALESCE(?tgtDir, "Missing") AS ?TargetDir)
+  BIND(IF(BOUND(?item), REPLACE(STR(?item), "^.*#", ""), "None") AS ?TransferredItem)
+  BIND(IF(?SourceDir = "Out" && ?TargetDir = "In" && BOUND(?item), "PASS", "FAIL") AS ?Status)
+}
+ORDER BY ?Status ?Connection

@@ -1,0 +1,23 @@
+PREFIX oml: <http://opencaesar.io/oml#>
+PREFIX component: <https://www.modelware.io/sierra/component#>
+
+SELECT ?component 
+       (COUNT(DISTINCT ?port) AS ?totalPorts) 
+       (COUNT(DISTINCT ?connectedPort) AS ?connectedPorts)
+       ((COUNT(DISTINCT ?port) - COUNT(DISTINCT ?connectedPort)) AS ?unconnectedPorts)
+       ("Partial Interface Integration" AS ?nearMissCondition)
+WHERE {
+  ?comp a component:Component ;
+        (component:hasPort|^component:portOf) ?port .
+  
+  OPTIONAL {
+    ?conn a component:Connection .
+    { ?conn oml:hasSource ?port } UNION { ?conn oml:hasTarget ?port }
+    BIND(?port AS ?connectedPort)
+  }
+
+  BIND(REPLACE(STR(?comp), "^.*#", "") AS ?component)
+}
+GROUP BY ?comp ?component
+HAVING (COUNT(DISTINCT ?connectedPort) > 0 && COUNT(DISTINCT ?connectedPort) < COUNT(DISTINCT ?port))
+ORDER BY DESC(?unconnectedPorts)

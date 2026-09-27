@@ -1,0 +1,21 @@
+PREFIX oml: <http://opencaesar.io/oml#>
+PREFIX component: <https://www.modelware.io/sierra/component#>
+
+SELECT ?OrphanPort ?Component ?Direction ?Impact
+WHERE {
+  ?p a component:Port .
+  OPTIONAL { ?p component:direction ?dir }
+  OPTIONAL { ?p (component:portOf|^component:hasPort) ?comp }
+  FILTER NOT EXISTS {
+    ?conn a component:Connection .
+    { ?conn oml:hasSource ?p } UNION { ?conn oml:hasTarget ?p }
+  }
+  BIND(REPLACE(STR(?p), "^.*#", "") AS ?OrphanPort)
+  BIND(IF(BOUND(?comp), REPLACE(STR(?comp), "^.*#", ""), "Unassigned") AS ?Component)
+  BIND(COALESCE(?dir, "Unspecified") AS ?Direction)
+  BIND(
+    IF(?Direction = "In", "Unrouted Command/Power Input (Subsystem Inoperable)", "Unrouted Telemetry/Signal Output (Unmonitored Subsystem)")
+    AS ?Impact
+  )
+}
+ORDER BY ?Component ?OrphanPort

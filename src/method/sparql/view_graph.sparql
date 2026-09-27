@@ -1,0 +1,15 @@
+PREFIX oml: <http://opencaesar.io/oml#>
+PREFIX component: <https://www.modelware.io/sierra/component#>
+
+CONSTRUCT {
+  ?srcComp component:connectedTo ?tgtComp .
+  ?srcComp a component:Component .
+  ?tgtComp a component:Component .
+}
+WHERE {
+  ?conn a component:Connection ;
+        oml:hasSource ?srcPort ;
+        oml:hasTarget ?tgtPort .
+  ?srcPort (component:portOf|^component:hasPort) ?srcComp .
+  ?tgtPort (component:portOf|^component:hasPort) ?tgtComp .
+}

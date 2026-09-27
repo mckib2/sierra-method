@@ -1,0 +1,29 @@
+PREFIX oml: <http://opencaesar.io/oml#>
+PREFIX component: <https://www.modelware.io/sierra/component#>
+
+SELECT ?row ?column (COALESCE(?n, 0) AS ?value)
+WHERE {
+  {
+    SELECT DISTINCT ?rowUri ?colUri
+    WHERE {
+      ?c1 a component:Component ; (component:hasPort|^component:portOf) ?p1 .
+      ?c2 a component:Component ; (component:hasPort|^component:portOf) ?p2 .
+      BIND(?c1 AS ?rowUri)
+      BIND(?c2 AS ?colUri)
+    }
+  }
+  OPTIONAL {
+    SELECT ?rowUri ?colUri (COUNT(DISTINCT ?conn) AS ?n)
+    WHERE {
+      ?conn a component:Connection ;
+            oml:hasSource ?srcPort ;
+            oml:hasTarget ?tgtPort .
+      ?srcPort (component:portOf|^component:hasPort) ?rowUri .
+      ?tgtPort (component:portOf|^component:hasPort) ?colUri .
+    }
+    GROUP BY ?rowUri ?colUri
+  }
+  BIND(REPLACE(STR(?rowUri), "^.*#", "") AS ?row)
+  BIND(REPLACE(STR(?colUri), "^.*#", "") AS ?column)
+}
+ORDER BY ?row ?column
