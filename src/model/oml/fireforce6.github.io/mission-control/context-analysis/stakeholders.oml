@@ -35,4 +35,9 @@ description <https://fireforce6.github.io/mission-control/context-analysis/stake
         base:description "Ensures alerts, communications, and responses comply with safety protocols."
         base:category "Support"
     ]
+
+    instance MoonPartyGoers : stakeholder:Stakeholder [
+        base:description "Attendees and revelers celebrating at the lunar party."
+        base:category "Beneficiary"
+    ]
 }

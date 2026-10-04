@@ -46,4 +46,11 @@ description <https://fireforce6.github.io/mission-control/context-analysis/conce
         base:priority "High"
         base:category "Need"
     ]
+
+    instance MoonPartyAtmosphere : stakeholder:Concern [
+        base:description "Need for festive illumination, dance atmosphere, and specular beam reflection across the lunar surface."
+        stakeholder:isExpressedBy stakeholders:MoonPartyGoers
+        base:category "Need"
+        base:priority "High"
+    ]
 }

@@ -61,4 +61,12 @@ description <https://fireforce6.github.io/mission-control/operational-analysis/r
         base:category "L2"
         base:priority "Medium"
     ]
+
+    instance R_DiscoMode : stakeholder:Requirement [
+        base:description "Disco Spin and Reflection Mode"
+        base:expression "The FireSat ADCS shall spin the spacecraft along its principal Z-axis to reflect party lights down onto the lunar base."
+        stakeholder:isStatedBy stakeholders:MoonPartyGoers
+        base:category "L1"
+        base:priority "High"
+    ]
 }

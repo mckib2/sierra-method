@@ -886,4 +886,9 @@ description <https://fireforce6.github.io/mission-control/system-analysis/compon
     instance FireSat : component:Component [
         base:description "FireSat Spacecraft"
     ]
+
+    instance Airhorn : component:Component [
+        base:description "FireSat Acoustic Effector and Alert Horn"
+        base:isContainedBy FireSat
+    ]
 }

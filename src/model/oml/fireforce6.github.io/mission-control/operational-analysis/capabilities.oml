@@ -45,4 +45,9 @@ description <https://fireforce6.github.io/mission-control/operational-analysis/c
         base:description "Integrate Fire Cloud telemetry for environment and drone data."
         mission:isRequiredBy objectives:O2
     ]
+
+    instance C_DiscoSpinAndReflect : mission:Capability [
+        base:description "Control spacecraft spin rates and reflect synchronized stage lighting across solar panels while sounding the Airhorn."
+        mission:isRequiredBy objectives:O_LunarDisco
+    ]
 }

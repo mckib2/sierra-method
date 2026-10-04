@@ -10,4 +10,8 @@ description <https://fireforce6.github.io/mission-control/context-analysis/missi
     instance MissionControl : mission:Mission [
         base:description "Allow Analysis of **Wild Fires** any where in CA."
     ]
+
+    instance LunarDiscoMission : mission:Mission [
+        base:description "Repurpose FireSat as an orbiting disco ball providing multi-angle specular reflections and musical audio blasts for lunar celebrations."
+    ]
 }

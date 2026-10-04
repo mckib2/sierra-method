@@ -35,4 +35,10 @@ description <https://fireforce6.github.io/mission-control/context-analysis/objec
         mission:isDerivedFrom concerns:SafetyOfficerNeeds
         mission:isDerivedFrom concerns:CommandCenterNeeds
     ]
+
+    instance O_LunarDisco : mission:Objective [
+        base:description "Maintain a constant 60 RPM disco rotation and beam laser light onto the lunar dance floor."
+        mission:isPursuedBy missions:LunarDiscoMission
+        mission:isDerivedFrom concerns:MoonPartyAtmosphere
+    ]
 }
